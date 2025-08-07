@@ -51,3 +51,40 @@ if (len(moda) > 0):
     print(f"Modas: {moda}")
 else:
     print(f"O ativo {ativo} é amodal")
+
+# Estimativas de Variabilidade
+desvio_absoluto = np.abs(df[ativo] - media)
+desvio_absoluto_medio = np.mean(desvio_absoluto)
+variancia = np.var(df[ativo], ddof=1)
+desvio_padrao = np.std(df[ativo], ddof=1)
+print(f"Estimativas de variabilidade para: {ativo}")
+print(f"Desvio Absoluto Médio: {desvio_absoluto_medio:.4f}")
+print(f"Variância: {variancia:.4f}")
+print(f"Desvio Padrão: {desvio_padrao:.4f}")
+print("-" * 30)
+
+# GRÁFICOS
+serie_as_dataframe = pd.DataFrame(df[ativo])
+fig, (histograma, caixa, densidade) = plt.subplots(3, 1, figsize=(8, 18))
+
+# Histograma
+# plt.figure() # Cria a primeira figura (janela)
+sns.histplot(data = serie_as_dataframe, ax = histograma)
+histograma.set_xlabel("variação percentual diária")
+histograma.set_ylabel("Ocorrências")
+histograma.set_title("Histograma")
+
+# Boxplot
+#plt.figure() # Cria a segunda figura (janela)
+sns.boxplot(data = serie_as_dataframe, ax = caixa)
+caixa.set_ylabel("variação percentual diária")
+caixa.set_title("Boxplot")
+
+# Densidade
+# plt.figure()
+sns.kdeplot(data = serie_as_dataframe, ax = densidade)
+plt.xlabel("variação percentual diária")
+plt.ylabel("Ocorrências")
+plt.title("Densidade")
+plt.tight_layout()
+plt.show()
